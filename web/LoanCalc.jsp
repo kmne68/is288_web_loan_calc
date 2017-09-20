@@ -4,6 +4,7 @@
     Author     : kmne6
 --%>
 
+<%@page import="java.text.NumberFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="business.Loan"%>
 <!DOCTYPE html>
@@ -23,9 +24,11 @@
 
                 Loan loan = new Loan(principle, rate, term);
 
+                // formatters
+                NumberFormat curr = NumberFormat.getCurrencyInstance();
         %>
 
-        <p>A payment of <%=loan.getMonthlyPayment()%> is required to 
+        <p>A payment of <%=curr.format(loan.getMonthlyPayment())%> is required to 
             pay off a loan of <%=loan.getPrincipal()%> in 
             <%=loan.getTerm()%> months at a rate of: <%=loan.getRate()%></p>
 
@@ -40,15 +43,13 @@
 
             <%
                 for (int month = 1; month <= loan.getTerm(); month++) {
-
-
             %>
             <tr>
                 <td align="right"><%= month%></td>
-                <td align="right"><%= loan.getBegBal(month)%></td>
-                <td align="right"><%= loan.getIntCharged(month)%></td>
-                <td align="right"><%= loan.getMonthlyPayment() - loan.getIntCharged(month)%></td>
-                <td align="right"><%= loan.getEndBal(month)%></td>
+                <td align="right"><%= curr.format(loan.getBegBal(month))%></td>
+                <td align="right"><%= curr.format(loan.getIntCharged(month))%></td>
+                <td align="right"><%= curr.format(loan.getMonthlyPayment() - loan.getIntCharged(month))%></td>
+                <td align="right"><%= curr.format(loan.getEndBal(month))%></td>
             </tr>    
             <% } %>
         </table>>
